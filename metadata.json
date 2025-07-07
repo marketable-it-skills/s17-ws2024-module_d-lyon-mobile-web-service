@@ -1,0 +1,10 @@
+{
+  "name": "WS2024 S17 - Module D",
+  "displayName": "Lyon Mobile Web Service",
+  "description": "In this project, you will create a mobile web application that provides access to essential service data for the city of Lyon.",
+  "url": "https://github.com/marketable-it-skills/s17-es2024-module_d-lyon-mobile-web-service",
+  "skillDomains": ["Web Technologies"],
+  "competition": "WorldSkills Lyon 2024",
+  "tags": ["HTML", "CSS", "SSR", "JavaScript", "PHP", "Laravel", "Next.js"],
+  "status": "draft"
+}
