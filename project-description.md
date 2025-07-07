@@ -53,7 +53,7 @@ Data should be retrieved from the following endpoints:
         "image": "/image.png?title=Jazz %26 Wine: Lyon Jazz %26 Wine Festival",
         "date": "2025-10-17"
       }
-      // ...
+      ...
     ],
     "pages": {
       "next": "/events?page=3",
@@ -115,6 +115,8 @@ Data should be retrieved from the following endpoints:
 - Weather data should be presented horizontally.
 - Enable scroll snapping to align each day's forecast with the viewport.
 - Refer to the provided visual mockup.
+
+![Horizontal scrolling](/assets/project-description-images/horizontal-scrolling.png)
 
 #### SVG Icons
 
