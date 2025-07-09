@@ -12,6 +12,10 @@ services:
       - APACHE_DOCUMENT_ROOT=/var/www/html
     command: >
       sh -c "
+        apt-get update &&
+        apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev &&
+        docker-php-ext-configure gd --with-freetype --with-jpeg &&
+        docker-php-ext-install -j$(nproc) gd &&
         a2enmod rewrite &&
         echo 'ServerName localhost' >> /etc/apache2/apache2.conf &&
         echo '<Directory /var/www/html>' >> /etc/apache2/sites-available/000-default.conf &&
