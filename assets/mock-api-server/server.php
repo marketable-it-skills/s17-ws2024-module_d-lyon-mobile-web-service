@@ -178,16 +178,15 @@ function getEventsData()
         ['title' => 'Autumn Wine Festival: Lyon Harvest Season', 'image' => '/image.png?title=Autumn Wine Festival: Lyon Harvest Season', 'date' => '2029-09-20'],
     ];
 
-    $total = count($events);
+    $beginningDate = isset($_GET['beginning_date']) ? new DateTime($_GET['beginning_date']) : null;
+    $endingDate = isset($_GET['ending_date']) ? new DateTime($_GET['ending_date']) : null;
 
-    if (isset($_GET['beginning_date']) && isset($_GET['ending_date'])) {
-        $beginningDate = new DateTime($_GET['beginning_date']);
-        $endingDate = new DateTime($_GET['ending_date']);
-        $events = array_filter($events, function ($event) use ($beginningDate, $endingDate) {
-            $eventDate = new DateTime($event['date']);
-            return $eventDate >= $beginningDate && $eventDate <= $endingDate;
-        });
-    }
+    $events = array_filter($events, function ($event) use ($beginningDate, $endingDate) {
+        $eventDate = new DateTime($event['date']);
+        return (!$beginningDate || $eventDate >= $beginningDate) && (!$endingDate || $eventDate <= $endingDate);
+    });
+
+    $total = count($events);
 
 
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
@@ -197,15 +196,13 @@ function getEventsData()
 
     $nextPage = $page + 1;
     $prevPage = $page - 1;
-    $query = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-    parse_str($query, $params);
-    if (isset($params['page'])) {
-        $nextPageUrl = preg_replace('/page=\d+/', "page=$nextPage", $_SERVER['REQUEST_URI']);
-        $prevPageUrl = preg_replace('/page=\d+/', "page=$prevPage", $_SERVER['REQUEST_URI']);
-    } else {
-        $nextPageUrl = $_SERVER['REQUEST_URI'] . "?page=$nextPage";
-        $prevPageUrl = $_SERVER['REQUEST_URI'] . "?page=$prevPage";
-    }
+
+    $url = explode('?', $_SERVER['REQUEST_URI'])[0];
+    $formattedBeginningDate = $beginningDate?->format('Y-m-d');
+    $formattedEndingDate = $endingDate?->format('Y-m-d');
+
+    $nextPageUrl = $url . "?" . http_build_query(['page' => $nextPage, 'beginning_date' => $formattedBeginningDate, 'ending_date' => $formattedEndingDate]);
+    $prevPageUrl = $url . "?" . http_build_query(['page' => $prevPage, 'beginning_date' => $formattedBeginningDate, 'ending_date' => $formattedEndingDate]);
     $pages = [
         'next' => $nextPage <= ceil($total / $limit) ? $nextPageUrl : null,
         'prev' => $prevPage > 0 ? $prevPageUrl : null
